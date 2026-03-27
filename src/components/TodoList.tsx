@@ -79,17 +79,17 @@ export default function TodoList() {
               className="bg-transparent outline-none text-xs font-medium"
             />
           </div>
-          <div className="flex flex-wrap gap-2 py-1">
+          <div className="grid grid-cols-4 gap-2">
             {categories.map(cat => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setCategory(cat)}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border",
+                  "py-2 rounded-full text-sm font-medium transition-colors text-center",
                   category === cat
-                    ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-white/10"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-500"
                 )}
               >
                 {cat}
