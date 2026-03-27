@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalStorage, Todo } from '../types';
-import { Plus, CheckCircle2, Circle, Trash2, Calendar, Edit2, X } from 'lucide-react';
+import { Plus, CheckCircle2, Circle, Trash2, Calendar } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { format, isPast, isToday, parseISO } from 'date-fns';
@@ -10,15 +10,13 @@ export default function TodoList() {
   const [inputValue, setInputValue] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [category, setCategory] = useState('Personal');
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editValue, setEditValue] = useState('');
 
   const categories = ['Personal', 'Work', 'Urgent', 'Shopping'];
 
   const addTodo = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    
+
     const newTodo: Todo = {
       id: crypto.randomUUID(),
       text: inputValue,
@@ -27,7 +25,7 @@ export default function TodoList() {
       createdAt: Date.now(),
       dueDate: dueDate || undefined,
     };
-    
+
     setTodos([newTodo, ...todos]);
     setInputValue('');
     setDueDate('');
@@ -39,16 +37,6 @@ export default function TodoList() {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter(t => t.id !== id));
-  };
-
-  const startEditing = (todo: Todo) => {
-    setEditingId(todo.id);
-    setEditValue(todo.text);
-  };
-
-  const saveEdit = (id: string) => {
-    setTodos(todos.map(t => t.id === id ? { ...t, text: editValue } : t));
-    setEditingId(null);
   };
 
   const getDueDateLabel = (dateStr?: string) => {
@@ -80,13 +68,13 @@ export default function TodoList() {
             <Plus size={24} />
           </button>
         </div>
-        
+
         <div className="flex flex-wrap gap-2 items-center">
           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-500">
             <Calendar size={14} />
-            <input 
-              type="date" 
-              value={dueDate} 
+            <input
+              type="date"
+              value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               className="bg-transparent outline-none text-xs font-medium"
             />
@@ -99,9 +87,9 @@ export default function TodoList() {
                 onClick={() => setCategory(cat)}
                 className={cn(
                   "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border whitespace-nowrap",
-                  category === cat 
-                    ? "bg-blue-500 text-white border-blue-500" 
-                    : "bg-white dark:bg-white/5 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-white/10"
+                  category === cat
+                    ? "bg-blue-500 text-white border-blue-500"
+                    : "bg-white dark:bg-white/5 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-white/10"
                 )}
               >
                 {cat}
@@ -120,9 +108,9 @@ export default function TodoList() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               key={todo.id}
-              className="ios-card p-4 flex items-center gap-4 group"
+              className="ios-card p-4 flex items-center gap-4"
             >
-              <button 
+              <button
                 onClick={() => toggleTodo(todo.id)}
                 className={cn(
                   "transition-colors flex-shrink-0",
@@ -131,28 +119,14 @@ export default function TodoList() {
               >
                 {todo.completed ? <CheckCircle2 size={24} /> : <Circle size={24} />}
               </button>
-              
+
               <div className="flex-1 min-w-0">
-                {editingId === todo.id ? (
-                  <div className="flex items-center gap-2">
-                    <input
-                      autoFocus
-                      type="text"
-                      value={editValue}
-                      onChange={(e) => setEditValue(e.target.value)}
-                      onBlur={() => saveEdit(todo.id)}
-                      onKeyDown={(e) => e.key === 'Enter' && saveEdit(todo.id)}
-                      className="flex-1 bg-gray-50 px-2 py-1 rounded outline-none text-lg"
-                    />
-                  </div>
-                ) : (
-                  <p className={cn(
-                    "text-lg transition-all truncate",
-                    todo.completed && "text-gray-400 line-through"
-                  )}>
-                    {todo.text}
-                  </p>
-                )}
+                <p className={cn(
+                  "text-lg transition-all truncate",
+                  todo.completed && "text-gray-400 line-through"
+                )}>
+                  {todo.text}
+                </p>
                 <div className="flex items-center gap-3 mt-0.5">
                   <span className="text-[10px] text-blue-500 font-bold uppercase tracking-wider">
                     {todo.category}
@@ -160,8 +134,8 @@ export default function TodoList() {
                   {todo.dueDate && (
                     <span className={cn(
                       "text-[10px] font-bold flex items-center gap-1",
-                      !todo.completed && isPast(parseISO(todo.dueDate)) && !isToday(parseISO(todo.dueDate)) 
-                        ? "text-red-500" 
+                      !todo.completed && isPast(parseISO(todo.dueDate)) && !isToday(parseISO(todo.dueDate))
+                        ? "text-red-500"
                         : "text-gray-400"
                     )}>
                       <Calendar size={10} />
@@ -171,20 +145,12 @@ export default function TodoList() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => startEditing(todo)}
-                  className="text-blue-400 hover:text-blue-600 p-2 transition-colors"
-                >
-                  <Edit2 size={18} />
-                </button>
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="text-red-400 hover:text-red-600 p-2 transition-colors"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
+              <button
+                onClick={() => deleteTodo(todo.id)}
+                className="text-red-400 hover:text-red-600 p-2 transition-colors"
+              >
+                <Trash2 size={18} />
+              </button>
             </motion.div>
           ))}
         </AnimatePresence>

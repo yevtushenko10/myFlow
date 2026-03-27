@@ -25,6 +25,18 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   const storedValueRef = useRef(storedValue);
   storedValueRef.current = storedValue;
 
+  // Cross-component sync within the same tab via custom event
+  useEffect(() => {
+    const handleLocalChange = (e: Event) => {
+      const { key: eventKey, value } = (e as CustomEvent).detail;
+      if (eventKey === key) {
+        setStoredValueState(value);
+      }
+    };
+    window.addEventListener('localStorageChange', handleLocalChange);
+    return () => window.removeEventListener('localStorageChange', handleLocalChange);
+  }, [key]);
+
   // Firestore real-time listener
   useEffect(() => {
     if (!isConfigured) return;
@@ -57,6 +69,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
     setStoredValueState(newValue);
     try { window.localStorage.setItem(key, JSON.stringify(newValue)); } catch {}
+    window.dispatchEvent(new CustomEvent('localStorageChange', { detail: { key, value: newValue } }));
 
     if (isConfigured) {
       const docRef = doc(db, STORE, key);
