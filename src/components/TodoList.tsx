@@ -8,7 +8,7 @@ import { format, isPast, isToday, parseISO } from 'date-fns';
 export default function TodoList() {
   const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
   const [inputValue, setInputValue] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [dueDate, setDueDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [category, setCategory] = useState('Personal');
 
   const categories = ['Personal', 'Work', 'Urgent', 'Shopping'];
@@ -28,7 +28,7 @@ export default function TodoList() {
 
     setTodos([newTodo, ...todos]);
     setInputValue('');
-    setDueDate('');
+    setDueDate(format(new Date(), 'yyyy-MM-dd'));
   };
 
   const toggleTodo = (id: string) => {
@@ -69,8 +69,8 @@ export default function TodoList() {
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2 items-center">
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-500">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-500 w-fit">
             <Calendar size={14} />
             <input
               type="date"
@@ -79,14 +79,14 @@ export default function TodoList() {
               className="bg-transparent outline-none text-xs font-medium"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1 w-full">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
             {categories.map(cat => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setCategory(cat)}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border whitespace-nowrap",
+                  "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border whitespace-nowrap flex-shrink-0",
                   category === cat
                     ? "bg-blue-500 text-white border-blue-500"
                     : "bg-white dark:bg-white/5 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-white/10"
