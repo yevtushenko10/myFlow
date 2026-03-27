@@ -9,7 +9,7 @@ export default function Reminders() {
   const [reminders, setReminders] = useLocalStorage<Reminder[]>('reminders', []);
   const [text, setText] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(format(new Date(), 'HH:mm'));
 
   const addReminder = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ export default function Reminders() {
       return dateTimeA.localeCompare(dateTimeB);
     }));
     setText('');
-    setTime('');
+    setTime(format(new Date(), 'HH:mm'));
   };
 
   const toggleReminder = (id: string) => {

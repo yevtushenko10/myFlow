@@ -79,7 +79,7 @@ export default function TodoList() {
               className="bg-transparent outline-none text-xs font-medium"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1 w-full">
             {categories.map(cat => (
               <button
                 key={cat}
