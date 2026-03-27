@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --bg-ios: #F2F2F7;
+  --text-ios: #1C1C1E;
+  --card-ios: #FFFFFF;
+  --border-ios: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --bg-ios: #000000;
+  --text-ios: #FFFFFF;
+  --card-ios: #1C1C1E;
+  --border-ios: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--bg-ios)] text-[var(--text-ios)] antialiased select-none transition-colors duration-300;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+.ios-card {
+  @apply bg-[var(--card-ios)] rounded-2xl shadow-sm border border-[var(--border-ios)];
+}
+
+.ios-btn {
+  @apply active:scale-95 transition-transform duration-100;
+}
+
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
