@@ -89,7 +89,7 @@ export default function TodoList() {
                   "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border",
                   category === cat
                     ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-white dark:bg-white/5 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-white/10"
+                    : "bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-white/10"
                 )}
               >
                 {cat}
