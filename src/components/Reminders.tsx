@@ -129,7 +129,7 @@ export default function Reminders() {
 
               <button 
                 onClick={() => deleteReminder(reminder.id)}
-                className="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                className="text-red-400 hover:text-red-600 transition-colors"
               >
                 <Trash2 size={20} />
               </button>

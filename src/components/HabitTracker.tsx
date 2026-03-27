@@ -105,7 +105,7 @@ export default function HabitTracker() {
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex flex-col gap-1 transition-opacity">
                     <button 
                       onClick={() => moveHabit(index, 'up')}
                       disabled={index === 0}
@@ -131,7 +131,7 @@ export default function HabitTracker() {
                 </div>
                 <button 
                   onClick={() => deleteHabit(habit.id)}
-                  className="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  className="text-red-400 hover:text-red-600 transition-colors"
                 >
                   <Trash2 size={18} />
                 </button>
