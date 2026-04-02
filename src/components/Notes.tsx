@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocalStorage, Note } from '../types';
 import { Plus, Search, Trash2, ChevronRight, Edit3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -128,13 +128,29 @@ export default function Notes() {
   );
 }
 
-function NoteEditor({ note, onSave, onClose, onDelete }: { 
-  note: Note, 
-  onSave: (c: string) => void, 
+function NoteEditor({ note, onSave, onClose, onDelete }: {
+  note: Note,
+  onSave: (c: string) => void,
   onClose: () => void,
-  onDelete: () => void 
+  onDelete: () => void
 }) {
   const [content, setContent] = useState(note.content);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const handler = () => {
+      const kbHeight = window.innerHeight - vv.height - vv.offsetTop;
+      setKeyboardHeight(Math.max(0, kbHeight));
+    };
+    vv.addEventListener('resize', handler);
+    vv.addEventListener('scroll', handler);
+    return () => {
+      vv.removeEventListener('resize', handler);
+      vv.removeEventListener('scroll', handler);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -142,9 +158,10 @@ function NoteEditor({ note, onSave, onClose, onDelete }: {
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="fixed inset-x-0 bottom-0 top-[30%] bg-white z-50 flex flex-col rounded-t-3xl shadow-2xl"
+      style={{ bottom: keyboardHeight }}
+      className="fixed inset-x-0 top-[45%] bg-white z-50 flex flex-col rounded-t-3xl shadow-2xl"
     >
-      <div className="flex-1 p-5 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto">
         <textarea
           autoFocus
           value={content}
@@ -153,7 +170,7 @@ function NoteEditor({ note, onSave, onClose, onDelete }: {
           className="w-full h-full text-base outline-none resize-none placeholder:text-gray-300 leading-relaxed"
         />
       </div>
-      <div className="p-4 pb-8 flex justify-between items-center border-t border-gray-100">
+      <div className="px-4 py-3 flex justify-between items-center border-t border-gray-100">
         <button onClick={onClose} className="text-blue-500 font-medium px-2 py-2">Done</button>
         <div className="flex gap-4 items-center">
           {note.id && (
