@@ -159,7 +159,7 @@ function NoteEditor({ note, onSave, onClose, onDelete }: {
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       style={{ bottom: keyboardHeight }}
-      className="fixed inset-x-0 top-[45%] bg-white z-50 flex flex-col rounded-t-3xl shadow-2xl"
+      className="fixed inset-x-0 top-[58%] bg-white z-50 flex flex-col rounded-t-3xl shadow-2xl"
     >
       <div className="flex-1 p-4 overflow-y-auto">
         <textarea
