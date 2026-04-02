@@ -9,9 +9,9 @@ export default function TodoList() {
   const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
   const [inputValue, setInputValue] = useState('');
   const [dueDate, setDueDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-  const [category, setCategory] = useState('Personal');
+  const [filter, setFilter] = useState('All');
 
-  const categories = ['Personal', 'Work', 'Urgent', 'Shopping'];
+  const filters = ['All', 'Personal', 'Work'];
 
   const addTodo = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function TodoList() {
       id: crypto.randomUUID(),
       text: inputValue,
       completed: false,
-      category,
+      category: filter === 'All' ? 'Personal' : filter,
       createdAt: Date.now(),
       dueDate: dueDate || undefined,
     };
@@ -69,39 +69,37 @@ export default function TodoList() {
           </button>
         </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-500 w-fit">
-            <Calendar size={14} />
-            <input
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="bg-transparent outline-none text-xs font-medium"
-            />
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setCategory(cat)}
-                className={cn(
-                  "py-2 rounded-full text-sm font-medium transition-colors text-center",
-                  category === cat
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-500"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-500 w-fit">
+          <Calendar size={14} />
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="bg-transparent outline-none text-xs font-medium"
+          />
         </div>
       </form>
 
+      <div className="grid grid-cols-3 gap-2">
+        {filters.map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={cn(
+              "py-2 rounded-full text-sm font-medium transition-colors text-center",
+              filter === f
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-500"
+            )}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
       <div className="space-y-3">
         <AnimatePresence mode="popLayout">
-          {todos.map((todo) => (
+          {todos.filter(t => filter === 'All' || t.category === filter).map((todo) => (
             <motion.div
               layout
               initial={{ opacity: 0, y: 10 }}

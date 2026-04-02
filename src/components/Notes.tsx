@@ -137,34 +137,34 @@ function NoteEditor({ note, onSave, onClose, onDelete }: {
   const [content, setContent] = useState(note.content);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="fixed inset-0 bg-white z-50 flex flex-col"
+      className="fixed inset-x-0 bottom-0 top-[30%] bg-white z-50 flex flex-col rounded-t-3xl shadow-2xl"
     >
-      <header className="p-4 flex justify-between items-center border-bottom border-gray-100">
-        <button onClick={onClose} className="text-blue-500 font-medium px-2">Done</button>
-        <div className="flex gap-4">
-          {note.id && (
-            <button onClick={onDelete} className="text-red-500 p-2">
-              <Trash2 size={20} />
-            </button>
-          )}
-          <button onClick={() => onSave(content)} className="bg-blue-500 text-white px-4 py-1.5 rounded-full text-sm font-bold">
-            Save
-          </button>
-        </div>
-      </header>
-      <div className="flex-1 p-6 space-y-4 overflow-y-auto">
+      <div className="flex-1 p-5 overflow-y-auto">
         <textarea
           autoFocus
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Start writing..."
-          className="w-full flex-1 text-lg outline-none resize-none placeholder:text-gray-200 leading-relaxed min-h-[80vh]"
+          className="w-full h-full text-base outline-none resize-none placeholder:text-gray-300 leading-relaxed"
         />
+      </div>
+      <div className="p-4 pb-8 flex justify-between items-center border-t border-gray-100">
+        <button onClick={onClose} className="text-blue-500 font-medium px-2 py-2">Done</button>
+        <div className="flex gap-4 items-center">
+          {note.id && (
+            <button onClick={onDelete} className="text-red-500 p-2">
+              <Trash2 size={20} />
+            </button>
+          )}
+          <button onClick={() => onSave(content)} className="bg-blue-500 text-white px-5 py-2 rounded-full text-sm font-bold">
+            Save
+          </button>
+        </div>
       </div>
     </motion.div>
   );
